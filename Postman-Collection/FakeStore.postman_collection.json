@@ -1,0 +1,463 @@
+{
+  "info": {
+    "_postman_id": "eb80978f-83f4-467c-af0c-f8b45affffa8",
+    "name": "FakeStore",
+    "description": "###### I created an API testing project using Postman on FakeStore API where I tested product, user, login, and cart modules. I performed CRUD operations, authentication testing, negative testing, response validation, and status code validation using Postman scripts.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50974038",
+    "_collection_link": "https://go.postman.co/collection/50974038-eb80978f-83f4-467c-af0c-f8b45affffa8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Product List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains product list\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Product has title field\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData[0]).to.have.property(\"title\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Product has price field\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData[0]).to.have.property(\"price\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fakestoreapi.com/products",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "description": "Verify status code  \nVerify product list  \nVerify product title  \nVerify product price"
+      },
+      "response": []
+    },
+    {
+      "name": "Single Product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Product ID exists\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"id\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Product title exists\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"title\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Product price exists\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"price\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fakestoreapi.com/products/2",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "products",
+            "2"
+          ]
+        },
+        "description": "Verify:-  \nStatus code = 200  \nProduct ID exists  \nProduct title exists  \nProduct price exists"
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Token generated successfully\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"token\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"mor_2314\",\r\n  \"password\": \"83r5^_\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fakestoreapi.com/auth/login",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "description": "### verify:-\n\nStatus code = 200\n\nToken generated\n\nAuthentication"
+      },
+      "response": []
+    },
+    {
+      "name": "Negative Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Login should fail for invalid credentials\", function () {\r",
+              "    pm.expect(pm.response.code).to.not.eql(201);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"mor_2314\",\r\n  \"password\": \"wrong123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fakestoreapi.com/auth/login",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "description": "Verify:-  \nInvalid login attempt  \nAuthentication failure handling  \nError response validation"
+      },
+      "response": []
+    },
+    {
+      "name": "Users",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"User list returned\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Username exists\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData[0]).to.have.property(\"username\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Email exists\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData[0]).to.have.property(\"email\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fakestoreapi.com/users",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        },
+        "description": "verify:-  \nStatus code = 200  \nUser list returned  \nUsername exists  \nEmail exists"
+      },
+      "response": []
+    },
+    {
+      "name": "Carts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cart list returned\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"User ID exists\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData[0]).to.have.property(\"userId\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Products array exists\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData[0]).to.have.property(\"products\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fakestoreapi.com/carts",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "carts"
+          ]
+        },
+        "description": "Verify:  \nStatus code = 200  \nCart list returned  \nUser ID exists  \nProducts array exists"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Cart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cart created successfully\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"id\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"User ID exists\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"userId\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Products exist\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"products\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"userId\": 1,\r\n  \"date\": \"2026-04-27\",\r\n  \"products\": [\r\n    {\r\n      \"productId\": 1,\r\n      \"quantity\": 2\r\n    }\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fakestoreapi.com/carts",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "carts"
+          ]
+        },
+        "description": "Verify:  \nStatus code = 201  \nCart created successfully  \nUser ID exists  \nProduct data exists"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Cart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cart updated successfully\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"id\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Products exist\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"products\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"userId\": 3,\r\n  \"date\": \"2026-04-27\",\r\n  \"products\": [\r\n    {\r\n      \"productId\": 2,\r\n      \"quantity\": 5\r\n    }\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fakestoreapi.com/carts/7",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "carts",
+            "7"
+          ]
+        },
+        "description": "Verify:-  \nStatus code = 200  \nCart updated successfully  \nUpdated product exists"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Carts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Cart deleted successfully\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"id\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://fakestoreapi.com/carts/7",
+          "protocol": "https",
+          "host": [
+            "fakestoreapi",
+            "com"
+          ],
+          "path": [
+            "carts",
+            "7"
+          ]
+        },
+        "description": "Verify:  \nStatus code = 200  \nCart deleted successfully  \nResponse received"
+      },
+      "response": []
+    }
+  ]
+}
